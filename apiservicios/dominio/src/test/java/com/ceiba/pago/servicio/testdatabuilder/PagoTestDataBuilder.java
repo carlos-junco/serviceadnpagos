@@ -3,26 +3,25 @@ package com.ceiba.pago.servicio.testdatabuilder;
 
 import com.ceiba.pago.modelo.entidad.Pago;
 
-import java.time.LocalDate;
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
-
-import static com.ceiba.pago.servicio.utilidadesservicio.CalcularFechaVencimiento.calcularFecha;
-
-
 /**
  * Clase encargada de crear un objeto de prueba
  * **/
 public class PagoTestDataBuilder {
 
+    private static final int DIAS_PROXIMO_PAGO=20;
+    public static final double PORCENTAJE_DESCUENTO = 0.15;
+
     private Long  id;
     private String cedulaUsuario;
     private String nombre;
     private String referenciaPago;
-    private String aplicaDescuento;
+    private boolean aplicaDescuento;
     private double valorBase;
     private double valorTotal;
     private LocalDateTime fechaRegistro;
-    private LocalDateTime fechaVencimiento;
+    private LocalDateTime fechaProximoPago;
 
     public PagoTestDataBuilder() {
         this.id=1L;
@@ -30,10 +29,11 @@ public class PagoTestDataBuilder {
         this.nombre="xxxx";
         this.referenciaPago ="0000";
         this.fechaRegistro= LocalDateTime.now();
-        this.fechaVencimiento= calcularFecha(20);
-        this.aplicaDescuento="S";
+        this.aplicaDescuento=true;
         this.valorBase=200000;
-        this.valorTotal=200000;
+        generarFechaProximoPago(fechaRegistro,DIAS_PROXIMO_PAGO);
+        generaDescuento(valorBase,PORCENTAJE_DESCUENTO);
+        //this.valorTotal=200000;
 
     }
     // creamos los métodos que setean una propiedad y retornan el objeto;
@@ -53,7 +53,7 @@ public class PagoTestDataBuilder {
         return this;
     }
 
-    public PagoTestDataBuilder conAplicaDescuento(String aplicaDescuento){
+    public PagoTestDataBuilder conAplicaDescuento(boolean aplicaDescuento){
         this.aplicaDescuento=aplicaDescuento;
         return this;
     }
@@ -75,7 +75,7 @@ public class PagoTestDataBuilder {
 
 
     public PagoTestDataBuilder conValorFechaVencimiento(LocalDateTime fechaVencimiento){
-        this.fechaVencimiento=fechaVencimiento;
+        this.fechaProximoPago =fechaVencimiento;
         return this;
     }
 
@@ -85,8 +85,33 @@ public class PagoTestDataBuilder {
     }
 
     public Pago build(){
-        return new Pago(id,cedulaUsuario,nombre, referenciaPago,aplicaDescuento,valorBase,valorTotal,fechaRegistro,fechaVencimiento);
+        return new Pago(id,cedulaUsuario,nombre, referenciaPago,aplicaDescuento,valorBase,fechaRegistro);
     }
+
+
+    public void generarFechaProximoPago(LocalDateTime fechaRegistro, int diasProximoPago) {
+
+        int incrementoDias = 0;
+        LocalDateTime fechaActual = LocalDateTime.now();
+        while (incrementoDias < diasProximoPago) {
+            fechaRegistro = fechaRegistro.plusDays(1);
+            if (DayOfWeek.SATURDAY != fechaRegistro.getDayOfWeek()
+                    && DayOfWeek.SUNDAY != fechaRegistro.getDayOfWeek()) {
+                incrementoDias++;
+            }
+        }
+        this.fechaProximoPago=fechaRegistro;
+    }
+
+    public void generaDescuento(double valorBase,double PORCENTAJE_DESCUENTO){
+        double valorDescuento= valorBase* PORCENTAJE_DESCUENTO;
+        if(this.aplicaDescuento){
+            this.valorTotal=this.valorBase-valorDescuento;
+        }else{
+            this.valorTotal=this.valorBase;
+        }
+    }
+
 
     // eliminar esté método
     public static void main(String[] args) {

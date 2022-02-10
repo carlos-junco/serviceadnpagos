@@ -5,8 +5,6 @@ import org.springframework.stereotype.Component;
 
 import com.ceiba.pago.comando.ComandoPago;
 
-import java.time.LocalDateTime;
-
 @Component
 public class FabricaPago {
 
@@ -16,11 +14,11 @@ public class FabricaPago {
                 comandoPago.getCedulaUsuario(),
                 comandoPago.getNombre(),
                 comandoPago.getReferenciaPago(),
-                comandoPago.getAplicaDescuento(),
+                comandoPago.isAplicaDescuento(),
                 comandoPago.getValorBase(),
-                comandoPago.getValorTotal(),
-                comandoPago.getFechaRegistro(),
-                comandoPago.getFechaVencimiento()
+               // comandoPago.getValorTotal(),
+                comandoPago.getFechaRegistro()
+               // comandoPago.getFechaProximoPago()
                 );
     }
 }

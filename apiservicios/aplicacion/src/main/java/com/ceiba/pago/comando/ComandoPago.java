@@ -17,9 +17,9 @@ public class ComandoPago {
     private String cedulaUsuario;
     private String nombre;
     private String referenciaPago;
-    private String aplicaDescuento;
+    private boolean aplicaDescuento;
     private double valorBase;
     private double valorTotal;
     private LocalDateTime fechaRegistro;
-    private LocalDateTime fechaVencimiento;
+    private LocalDateTime fechaProximoPago;
 }

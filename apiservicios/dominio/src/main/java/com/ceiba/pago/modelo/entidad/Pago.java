@@ -1,7 +1,6 @@
 package com.ceiba.pago.modelo.entidad;
 import lombok.Getter;
-import lombok.Setter;
-
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 
 import static com.ceiba.dominio.ValidadorArgumento.*;
@@ -13,7 +12,6 @@ import static com.ceiba.dominio.ValidadorArgumento.*;
  * @version 1.0.0
  */
 @Getter
-@Setter
 public class Pago {
 
     private static final String SE_DEBE_INGRESAR_LA_FECHA_DE_REGISTRO = "Se debe ingresar la fecha de registro";
@@ -26,31 +24,34 @@ public class Pago {
     private static final String LONGITUD_CEDULA="La cédula debe tener menos de 10 carácteres";
     private static final String NOMBRE_LONGITUD_MAXIMA="El nombre sólo puedo contener m+aximo 15 carácteres";
     private static final String VALIDA_FECHAS="La fecha de registro debe ser menor que la fecha de vecimiento";
+    public static final int NUMERO_DIAS_PROXIMO_PAGO = 20;
+    public static final double PORCENTAJE_DESCUENTO = 0.15;
+
 
     private Long id;
     private String cedulaUsuario;
     private String nombre;
     private String referenciaPago;
-    private String aplicaDescuento;
+    private boolean aplicaDescuento;
     private double valorBase;
     private double valorTotal;
     private LocalDateTime fechaRegistro;
-    private LocalDateTime fechaVencimiento;
+    private LocalDateTime fechaProximoPago;
 
-    public Pago(Long id, String cedulaUsuario, String nombre, String referenciaPago, String aplicaDescuento, double valorBase, double valorTotal, LocalDateTime fechaRegistro, LocalDateTime fechaVencimiento) {
-        validandoArgumentos(cedulaUsuario, nombre, referenciaPago, valorBase, fechaRegistro, fechaVencimiento);
+    public Pago(Long id, String cedulaUsuario, String nombre, String referenciaPago, boolean aplicaDescuento, double valorBase, LocalDateTime fechaRegistro) {
+        validandoArgumentos(cedulaUsuario, nombre, referenciaPago, valorBase, fechaRegistro);
         this.id = id;
         this.cedulaUsuario=cedulaUsuario;
         this.nombre = nombre;
         this.referenciaPago =referenciaPago;
         this.aplicaDescuento=aplicaDescuento;
         this.valorBase=valorBase;
-        this.valorTotal=valorTotal;
         this.fechaRegistro = fechaRegistro;
-        this.fechaVencimiento = fechaVencimiento;
+        generarFechaProximoPago(fechaRegistro,NUMERO_DIAS_PROXIMO_PAGO);
+        generaDescuento(valorBase);
     }
 
-    private void validandoArgumentos(String cedulaUsuario, String nombre, String referenciaPago, double valorBase, LocalDateTime fechaRegistro, LocalDateTime fechaVencimiento) {
+    private void validandoArgumentos(String cedulaUsuario, String nombre, String referenciaPago, double valorBase, LocalDateTime fechaRegistro) {
         validarObligatorio(cedulaUsuario,SE_DEBE_INGRESAR_CEDULA);
         validarObligatorio(nombre, SE_DEBE_INGRESAR_EL_NOMBRE_DE_USUARIO);
         validarLongitudMaxima(cedulaUsuario,10,LONGITUD_CEDULA);
@@ -59,6 +60,42 @@ public class Pago {
         validarObligatorio(valorBase,SE_DEBE_INGRESAR_VALOR_BASE);
         validarPositivo(valorBase,SE_DEBE_INGRESAR_VALOR_MAYOR_CERO);
         validarObligatorio(fechaRegistro, SE_DEBE_INGRESAR_LA_FECHA_DE_REGISTRO);
-        validarMenor(fechaRegistro, fechaVencimiento, VALIDA_FECHAS);
+    }
+
+    private void generarFechaProximoPago(LocalDateTime fechaRegistro,int numeroDiasProximoPago){
+        int incrementoDias = 0;
+        while (incrementoDias < numeroDiasProximoPago) {
+            fechaRegistro = fechaRegistro.plusDays(1);
+            if (DayOfWeek.SATURDAY != fechaRegistro.getDayOfWeek()
+                    && DayOfWeek.SUNDAY != fechaRegistro.getDayOfWeek()) {
+                incrementoDias++;
+            }
+        }
+        this.fechaProximoPago =fechaRegistro;
+    }
+
+    public void generaDescuento(double valorBase){
+        double valorDescuento= valorBase* PORCENTAJE_DESCUENTO;
+        if(this.aplicaDescuento){
+            this.valorTotal=this.valorBase-valorDescuento;
+        }else{
+            this.valorTotal=this.valorBase;
+        }
+    }
+
+
+    @Override
+    public String toString() {
+        return "Pago{" +
+                "id=" + id +
+                ", cedulaUsuario='" + cedulaUsuario + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", referenciaPago='" + referenciaPago + '\'' +
+                ", aplicaDescuento=" + aplicaDescuento +
+                ", valorBase=" + valorBase +
+                ", valorTotal=" + valorTotal +
+                ", fechaRegistro=" + fechaRegistro +
+                ", fechaProximoPago=" + fechaProximoPago +
+                '}';
     }
 }
