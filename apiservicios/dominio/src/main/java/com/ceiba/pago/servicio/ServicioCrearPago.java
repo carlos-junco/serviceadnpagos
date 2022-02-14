@@ -1,10 +1,8 @@
 package com.ceiba.pago.servicio;
 
-import com.ceiba.pago.modelo.entidad.Pago;
+import com.ceiba.pago.modelo.entidad.pago.Pago;
 import com.ceiba.pago.puerto.repositorio.RepositorioPago;
 import com.ceiba.dominio.excepcion.ExcepcionDuplicidad;
-
-import java.time.LocalDateTime;
 
 /***
  * clase encargada de manejar la lógica de negocio para crear pagos
@@ -46,25 +44,4 @@ public class ServicioCrearPago {
             throw new ExcepcionDuplicidad(EL_PAGO_YA_SE_ENCUENTRA_EN_EL_SISTEMA);
         }
     }
-    /**
-     * método que valida que el pago se realice en días hábiles, si es sábado o domingo lanzaz una excepción
-     * @params pago
-     * @Exception ExceptionmDiaNoValido
-     * **/
-
-
-    /*
-
-    private void validarDiaPago(LocalDateTime fechaRegistro){
-        if(fechaRegistro.getDayOfWeek().equals(DayOfWeek.SATURDAY) || fechaRegistro.getDayOfWeek().equals(DayOfWeek.SUNDAY)){
-            throw new ExcepcionDiaNoValido(DIA_NO_VALIDO);
-        }
-        pago.setFechaRegistro(fechaRegistro);
-    }
-
-
-     */
-
-
-
 }

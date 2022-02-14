@@ -1,6 +1,6 @@
 package com.ceiba.pago.puerto.repositorio;
 
-import com.ceiba.pago.modelo.entidad.Pago;
+import com.ceiba.pago.modelo.entidad.pago.Pago;
 
 /**
  * Interfaz que se sirve como un asbtracción de acceso a datos

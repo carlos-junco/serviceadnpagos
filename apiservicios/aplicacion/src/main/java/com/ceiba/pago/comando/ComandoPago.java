@@ -2,6 +2,7 @@ package com.ceiba.pago.comando;
 
 
 
+import com.ceiba.pago.modelo.entidad.cliente.Cliente;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,8 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ComandoPago {
     private Long id;
-    private String cedulaUsuario;
-    private String nombre;
+    private Cliente cliente;
     private String referenciaPago;
     private boolean aplicaDescuento;
     private double valorBase;

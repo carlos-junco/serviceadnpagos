@@ -1,7 +1,10 @@
 package com.ceiba.pago.servicio.testdatabuilder;
 
 
-import com.ceiba.pago.modelo.entidad.Pago;
+import com.ceiba.pago.modelo.entidad.cliente.Cliente;
+import com.ceiba.pago.modelo.entidad.cliente.Identificacion;
+import com.ceiba.pago.modelo.entidad.cliente.TipoIdentificacion;
+import com.ceiba.pago.modelo.entidad.pago.Pago;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
@@ -14,8 +17,7 @@ public class PagoTestDataBuilder {
     public static final double PORCENTAJE_DESCUENTO = 0.15;
 
     private Long  id;
-    private String cedulaUsuario;
-    private String nombre;
+    private Cliente cliente;
     private String referenciaPago;
     private boolean aplicaDescuento;
     private double valorBase;
@@ -25,16 +27,13 @@ public class PagoTestDataBuilder {
 
     public PagoTestDataBuilder() {
         this.id=1L;
-        this.cedulaUsuario="1111";
-        this.nombre="xxxx";
+        this.cliente=new Cliente(1L,"Fulano",new Identificacion(TipoIdentificacion.CEDULA,"1083000935"));
         this.referenciaPago ="0000";
         this.fechaRegistro= LocalDateTime.now();
         this.aplicaDescuento=true;
         this.valorBase=200000;
         generarFechaProximoPago(fechaRegistro,DIAS_PROXIMO_PAGO);
         generaDescuento(valorBase,PORCENTAJE_DESCUENTO);
-        //this.valorTotal=200000;
-
     }
     // creamos los métodos que setean una propiedad y retornan el objeto;
 
@@ -43,13 +42,8 @@ public class PagoTestDataBuilder {
         return this;
     }
 
-    public PagoTestDataBuilder conCedulaUsuario(String cedulaUsuario){
-        this.cedulaUsuario=cedulaUsuario;
-        return this;
-    }
-
-    public PagoTestDataBuilder conNombre(String nombre){
-        this.nombre=nombre;
+    public PagoTestDataBuilder conCliente(Cliente cliente){
+        this.cliente=cliente;
         return this;
     }
 
@@ -84,11 +78,6 @@ public class PagoTestDataBuilder {
         return this;
     }
 
-    public Pago build(){
-        return new Pago(id,cedulaUsuario,nombre, referenciaPago,aplicaDescuento,valorBase,fechaRegistro);
-    }
-
-
     public void generarFechaProximoPago(LocalDateTime fechaRegistro, int diasProximoPago) {
 
         int incrementoDias = 0;
@@ -112,11 +101,14 @@ public class PagoTestDataBuilder {
         }
     }
 
+    public Pago build(){
+        return new Pago(id,cliente, referenciaPago,aplicaDescuento,valorBase,fechaRegistro);
+    }
+
 
     // eliminar esté método
     public static void main(String[] args) {
         Pago pago= new PagoTestDataBuilder().build();
         System.out.println(pago.toString());
     }
-
 }
