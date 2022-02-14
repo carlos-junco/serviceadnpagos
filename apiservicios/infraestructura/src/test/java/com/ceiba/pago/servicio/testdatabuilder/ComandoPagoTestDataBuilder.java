@@ -1,47 +1,42 @@
 package com.ceiba.pago.servicio.testdatabuilder;
 
 import com.ceiba.pago.comando.ComandoPago;
+import com.ceiba.pago.modelo.entidad.cliente.Cliente;
+import com.ceiba.pago.modelo.entidad.cliente.Identificacion;
+import com.ceiba.pago.modelo.entidad.cliente.TipoIdentificacion;
 
 import java.time.DayOfWeek;
-import java.time.LocalDateTime;
-
+import java.time.LocalDate;
 
 public class ComandoPagoTestDataBuilder {
     public static final int DIAS_PROXIMO_PAGO = 20;
     public static final double PORCENTAJE_DESCUENTO = 0.15;
     private Long id;
-    private String cedulaUsuario;
-    private String nombre;
+    private Cliente cliente;
     private String referenciaPago;
     private boolean aplicaDescuento;
     private double valorBase;
     private double valorTotal;
-    private LocalDateTime fechaRegistro;
-    private LocalDateTime fechaProximoPago;;
+    private LocalDate fechaRegistro;
+    private LocalDate fechaProximoPago;;
 
     public ComandoPagoTestDataBuilder() {
         this.id=2L;
-        this.cedulaUsuario="1111111111";
-        this.nombre="xxxx";
+        this.cliente=new Cliente(1L,"Fulano",new Identificacion(TipoIdentificacion.CEDULA,"1083000935"));
         this.referenciaPago="1111";
         this.aplicaDescuento=true;
         this.valorBase=200000;
-        //this.valorTotal=200000;
-        this.fechaRegistro = LocalDateTime.now();
+        this.fechaRegistro = LocalDate.now();
         generarFechaProximoPago(fechaRegistro, DIAS_PROXIMO_PAGO);
         generaDescuento(valorBase, PORCENTAJE_DESCUENTO);
-       // this.fechaProximoPago =calcularFecha(20);
     }
 
-    public ComandoPagoTestDataBuilder conCedula(String cedulaUsuario) {
-        this.cedulaUsuario = cedulaUsuario;
+
+    public ComandoPagoTestDataBuilder conCliente(Cliente cliente){
+        this.cliente=cliente;
         return this;
     }
 
-    public ComandoPagoTestDataBuilder conNombre(String nombre) {
-        this.nombre = nombre;
-        return this;
-    }
     public ComandoPagoTestDataBuilder conReferenciaPago(String referenciaPago) {
         this.referenciaPago = referenciaPago;
         return this;
@@ -56,14 +51,14 @@ public class ComandoPagoTestDataBuilder {
         return this;
     }
 
-    public ComandoPagoTestDataBuilder conAplicaConFechaVencimiento(LocalDateTime fechaVencimiento) {
+    public ComandoPagoTestDataBuilder conAplicaConFechaVencimiento(LocalDate fechaVencimiento) {
         this.fechaProximoPago = fechaVencimiento;
         return this;
     }
-    public void generarFechaProximoPago(LocalDateTime fechaRegistro, int diasProximoPago) {
+    public void generarFechaProximoPago(LocalDate fechaRegistro, int diasProximoPago) {
 
         int incrementoDias = 0;
-        LocalDateTime fechaActual = LocalDateTime.now();
+        LocalDate fechaActual = LocalDate.now();
         while (incrementoDias < diasProximoPago) {
             fechaRegistro = fechaRegistro.plusDays(1);
             if (DayOfWeek.SATURDAY != fechaRegistro.getDayOfWeek()
@@ -84,7 +79,7 @@ public class ComandoPagoTestDataBuilder {
     }
 
     public ComandoPago build() {
-        return new ComandoPago(id,cedulaUsuario,nombre,referenciaPago,aplicaDescuento,valorBase,valorTotal,fechaRegistro, fechaProximoPago);
+        return new ComandoPago(id,cliente,referenciaPago,aplicaDescuento,valorBase,valorTotal,fechaRegistro, fechaProximoPago);
     }
 
 }

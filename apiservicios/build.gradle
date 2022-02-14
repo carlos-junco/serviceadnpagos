@@ -71,6 +71,7 @@ project.ext.apachecommons = [
 	project.ext.springbootjdbc = ["org.springframework.boot:spring-boot-starter-jdbc:${springBootVersion}"]
 	project.ext.flyway = ["org.flywaydb:flyway-core:5.2.1"]
 	project.ext.flywaytest = ["org.flywaydb.flyway-test-extensions:flyway-spring-test:5.2.1"]
+	project.ext.jpa=["org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"]
 
 	project.ext.h2 = ["com.h2database:h2:1.4.200"]
 }

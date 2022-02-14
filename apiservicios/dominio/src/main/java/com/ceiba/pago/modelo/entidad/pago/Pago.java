@@ -1,9 +1,14 @@
 package com.ceiba.pago.modelo.entidad.pago;
+import com.ceiba.dominio.excepcion.ExcepcionValorInvalido;
 import com.ceiba.pago.modelo.entidad.cliente.Cliente;
 import com.ceiba.pago.servicio.excepcionesservicio.ExcepcionDiaNoValido;
 import lombok.Getter;
+
+import javax.persistence.CascadeType;
+import javax.persistence.OneToOne;
 import java.time.DayOfWeek;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+
 
 import static com.ceiba.dominio.ValidadorArgumento.*;
 
@@ -25,6 +30,7 @@ public class Pago {
     public static final int NUMERO_DIAS_PROXIMO_PAGO = 20;
     public static final double PORCENTAJE_DESCUENTO = 0.15;
     public static final String DIA_NO_VALIDO="No se puede pagar este día";
+    public static final String LA_REFENCIA_DE_PAGO_DEBE_TENER_4_DÍGITOS = "La refencia de pago debe tener 4 dígitos";
 
 
     private Long id;
@@ -33,10 +39,10 @@ public class Pago {
     private boolean aplicaDescuento;
     private double valorBase;
     private double valorTotal;
-    private LocalDateTime fechaRegistro;
-    private LocalDateTime fechaProximoPago;
+    private LocalDate fechaRegistro;
+    private LocalDate fechaProximoPago;
 
-    public Pago(Long id, Cliente cliente, String referenciaPago, boolean aplicaDescuento, double valorBase, LocalDateTime fechaRegistro) {
+    public Pago(Long id, Cliente cliente, String referenciaPago, boolean aplicaDescuento, double valorBase, LocalDate fechaRegistro) {
         validandoArgumentos(referenciaPago, valorBase, fechaRegistro);
         this.id = id;
         this.cliente=cliente;
@@ -44,19 +50,20 @@ public class Pago {
         this.aplicaDescuento=aplicaDescuento;
         this.valorBase=valorBase;
         this.fechaRegistro = fechaRegistro;
-        validaDiaPago(fechaRegistro);
+        validaDiaPagoNoFinSemana(fechaRegistro);
         generarFechaProximoPago(fechaRegistro,NUMERO_DIAS_PROXIMO_PAGO);
         generaDescuento(valorBase);
     }
 
-    private void validandoArgumentos(String referenciaPago, double valorBase, LocalDateTime fechaRegistro) {
+    private void validandoArgumentos(String referenciaPago, double valorBase, LocalDate fechaRegistro) {
         validarObligatorio(referenciaPago, SE_DEBE_INGRESAR_REFERENCIA_PAGO);
+        validaCantidadCaracteresReferenciaPago(referenciaPago,LA_REFENCIA_DE_PAGO_DEBE_TENER_4_DÍGITOS);
         validarObligatorio(valorBase,SE_DEBE_INGRESAR_VALOR_BASE);
         validarPositivo(valorBase,SE_DEBE_INGRESAR_VALOR_MAYOR_CERO);
         validarObligatorio(fechaRegistro, SE_DEBE_INGRESAR_LA_FECHA_DE_REGISTRO);
     }
 
-    private void generarFechaProximoPago(LocalDateTime fechaRegistro,int numeroDiasProximoPago){
+    private void generarFechaProximoPago(LocalDate fechaRegistro,int numeroDiasProximoPago){
         int incrementoDias = 0;
         while (incrementoDias < numeroDiasProximoPago) {
             fechaRegistro = fechaRegistro.plusDays(1);
@@ -77,10 +84,16 @@ public class Pago {
         }
     }
 
-    public void validaDiaPago(LocalDateTime fechaRegistro){
+    public void validaDiaPagoNoFinSemana(LocalDate fechaRegistro){
         if(fechaRegistro.getDayOfWeek().equals(DayOfWeek.SATURDAY)|| fechaRegistro.getDayOfWeek().equals(DayOfWeek.SUNDAY)){
             throw new ExcepcionDiaNoValido(DIA_NO_VALIDO);
         }
+    }
+
+    public void validaCantidadCaracteresReferenciaPago(String referenciaPago,String mensaje){
+       if(referenciaPago.length()>4 || referenciaPago.length()<4) {
+           throw new ExcepcionValorInvalido(mensaje);
+       }
     }
 
     @Override

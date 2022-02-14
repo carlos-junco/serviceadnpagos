@@ -7,7 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.time.LocalDateTime;
+
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -20,6 +21,6 @@ public class ComandoPago {
     private boolean aplicaDescuento;
     private double valorBase;
     private double valorTotal;
-    private LocalDateTime fechaRegistro;
-    private LocalDateTime fechaProximoPago;
+    private LocalDate fechaRegistro;
+    private LocalDate fechaProximoPago;
 }
