@@ -1,8 +1,8 @@
 package com.ceiba.configuracion;
 
 import com.ceiba.pago.puerto.repositorio.RepositorioPago;
-import com.ceiba.pago.servicio.ServicioCrearPago;
-import com.ceiba.pago.servicio.ServicioEliminarPago;
+import com.ceiba.pago.servicio.pago.ServicioCrearPago;
+import com.ceiba.pago.servicio.pago.ServicioEliminarPago;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;

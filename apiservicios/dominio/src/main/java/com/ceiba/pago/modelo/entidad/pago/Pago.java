@@ -4,8 +4,7 @@ import com.ceiba.pago.modelo.entidad.cliente.Cliente;
 import com.ceiba.pago.servicio.excepcionesservicio.ExcepcionDiaNoValido;
 import lombok.Getter;
 
-import javax.persistence.CascadeType;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 
@@ -18,6 +17,8 @@ import static com.ceiba.dominio.ValidadorArgumento.*;
  * @author carlos.junco
  * @version 1.0.
  */
+@Entity
+@Table(name="pago")
 @Getter
 public class Pago {
 
@@ -32,7 +33,6 @@ public class Pago {
     public static final String DIA_NO_VALIDO="No se puede pagar este día";
     public static final String LA_REFENCIA_DE_PAGO_DEBE_TENER_4_DÍGITOS = "La refencia de pago debe tener 4 dígitos";
 
-
     private Long id;
     private Cliente cliente;
     private String referenciaPago;
@@ -42,10 +42,9 @@ public class Pago {
     private LocalDate fechaRegistro;
     private LocalDate fechaProximoPago;
 
-    public Pago(Long id, Cliente cliente, String referenciaPago, boolean aplicaDescuento, double valorBase, LocalDate fechaRegistro) {
+    public Pago(Long id, String referenciaPago, boolean aplicaDescuento, double valorBase, LocalDate fechaRegistro) {
         validandoArgumentos(referenciaPago, valorBase, fechaRegistro);
         this.id = id;
-        this.cliente=cliente;
         this.referenciaPago =referenciaPago;
         this.aplicaDescuento=aplicaDescuento;
         this.valorBase=valorBase;
@@ -100,7 +99,6 @@ public class Pago {
     public String toString() {
         return "Pago{" +
                 "id=" + id +
-                ", cliente=" + cliente.getNombre() +
                 " cedula" + cliente.getIdentificacion().getNumeroIdentificacion()+
                 ", referenciaPago='" + referenciaPago + '\'' +
                 ", aplicaDescuento=" + aplicaDescuento +

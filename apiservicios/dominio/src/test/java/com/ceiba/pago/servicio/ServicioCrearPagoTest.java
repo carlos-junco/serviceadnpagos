@@ -4,6 +4,7 @@ import com.ceiba.BasePrueba;
 import com.ceiba.dominio.excepcion.ExcepcionDuplicidad;
 import com.ceiba.pago.modelo.entidad.pago.Pago;
 import com.ceiba.pago.puerto.repositorio.RepositorioPago;
+import com.ceiba.pago.servicio.pago.ServicioCrearPago;
 import com.ceiba.pago.servicio.testdatabuilder.PagoTestDataBuilder;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -1,7 +1,7 @@
 package com.ceiba.pago.comando.manejador;
 
 import com.ceiba.manejador.ManejadorComando;
-import com.ceiba.pago.servicio.ServicioEliminarPago;
+import com.ceiba.pago.servicio.pago.ServicioEliminarPago;
 import org.springframework.stereotype.Component;
 
 @Component

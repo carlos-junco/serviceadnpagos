@@ -19,7 +19,6 @@ public class PagoTestDataBuilder {
     public static final String DIA_NO_VALIDO="No se puede pagar este día";
 
     private Long  id;
-    private Cliente cliente;
     private String referenciaPago;
     private boolean aplicaDescuento;
     private double valorBase;
@@ -29,7 +28,6 @@ public class PagoTestDataBuilder {
 
     public PagoTestDataBuilder() {
         this.id=1L;
-        this.cliente=new Cliente(1L,"Fulano",new Identificacion(TipoIdentificacion.CEDULA,"1083000935"));
         this.referenciaPago ="0000";
         this.fechaRegistro= LocalDate.now();
         this.aplicaDescuento=true;
@@ -41,11 +39,6 @@ public class PagoTestDataBuilder {
 
     public PagoTestDataBuilder conId(Long id){
         this.id=id;
-        return this;
-    }
-
-    public PagoTestDataBuilder conCliente(Cliente cliente){
-        this.cliente=cliente;
         return this;
     }
 
@@ -104,9 +97,8 @@ public class PagoTestDataBuilder {
     }
 
     public Pago build(){
-        return new Pago(id,cliente, referenciaPago,aplicaDescuento,valorBase,fechaRegistro);
+        return new Pago(id, referenciaPago,aplicaDescuento,valorBase,fechaRegistro);
     }
-
 
     // eliminar esté método
     public static void main(String[] args) {

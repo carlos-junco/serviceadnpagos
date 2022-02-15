@@ -1,6 +1,7 @@
 package com.ceiba.pago.servicio;
 
 import com.ceiba.pago.puerto.repositorio.RepositorioPago;
+import com.ceiba.pago.servicio.pago.ServicioEliminarPago;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

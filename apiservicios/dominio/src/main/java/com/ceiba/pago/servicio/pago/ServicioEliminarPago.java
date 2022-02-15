@@ -1,4 +1,4 @@
-package com.ceiba.pago.servicio;
+package com.ceiba.pago.servicio.pago;
 
 
 import com.ceiba.pago.puerto.repositorio.RepositorioPago;

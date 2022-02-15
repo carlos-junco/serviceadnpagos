@@ -11,11 +11,10 @@ public class FabricaPago {
     public Pago crear(ComandoPago comandoPago) {
         return new Pago(
                 comandoPago.getId(),
-                comandoPago.getCliente(),
                 comandoPago.getReferenciaPago(),
                 comandoPago.isAplicaDescuento(),
                 comandoPago.getValorBase(),
-               // comandoPago.getValorTotal(),
+                //comandoPago.getValorTotal(),
                 comandoPago.getFechaRegistro()
                // comandoPago.getFechaProximoPago()
                 );

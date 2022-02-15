@@ -2,6 +2,8 @@ package com.ceiba.pago.modelo.entidad.cliente;
 
 import lombok.Getter;
 
+import javax.persistence.*;
+
 import static com.ceiba.dominio.ValidadorArgumento.*;
 
 @Getter
@@ -12,6 +14,8 @@ public class Cliente {
     public static final String NUMERO_IDENTIFICACION_MAYOR = "El número de identificación no puede tener más diez dígitos";
     public static final String NUMERO_IDENTIFICACION_MENOR = "El número de indentificación no puede tener menos de diez dígitos";
     public static final String NOMBRE_MAXIMO="El nombre sólo puede contener 30 caracteres máximo";
+
+
     private Long id;
     private String nombre;
     private Identificacion identificacion;

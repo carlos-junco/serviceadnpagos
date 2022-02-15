@@ -16,6 +16,6 @@ spring:
       type: com.zaxxer.hikari.HikariDataSource
       jdbcUrl: jdbc:h2:mem:servicios
       username: root
-      password: +fWaKKKEVnDY9YzK1CBeA==
+      password: 123456
       hikari:
          poolName: pool
