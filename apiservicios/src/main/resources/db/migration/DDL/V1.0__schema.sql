@@ -18,7 +18,7 @@ create table pagos (
  fecha_vencimiento datetime not null
 );
 
-ALTER TABLE "pagos"
+ALTER TABLE pagos
    ADD CONSTRAINT fk_id_cliente
    FOREIGN KEY (id)
-   REFERENCES "clientes"(id)
+   REFERENCES clientes(id)
